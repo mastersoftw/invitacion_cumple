@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Aventura Salvaje! Cumpleaños de Jorge el Curioso 🎈🍌</title>
+  
+  <!-- Fuentes Google Fonts Premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       VARIABLES Y RESET GLOBAL
+    ========================================================= */
+    :root {
+      --yellow-main: #FFC700;
+      --yellow-light: #FFF4B8;
+      --red-brand: #E63946;
+      --blue-sky: #00B4D8;
+      --blue-deep: #0077B6;
+      --green-jungle: #2A9D8F;
+      --brown-dark: #3B1F0B;
+      
+      --font-heading: 'Fredoka', cursive, sans-serif;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      font-family: var(--font-body);
+      background-color: var(--brown-dark);
+      color: var(--brown-dark);
+    }
+
+    body {
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--brown-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--yellow-main);
+      border-radius: 5px;
+    }
+
+    /* =========================================================
+       EFECTO CONFETI CAYENDO (CAPA GLOBAL)
+    ========================================================= */
+    #confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 16px;
+      opacity: 0.8;
+      top: -20px;
+      animation: fallConfetti linear infinite;
+    }
+
+    @keyframes fallConfetti {
+      0% {
+        transform: translateY(0) rotate(0deg) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(105vh) rotate(720deg) translateX(50px);
+        opacity: 0.2;
+      }
+    }
+
+    /* =========================================================
+       BANANAS FLOTANTES (EFECTO DE FONDO EN SECCIONES)
+    ========================================================= */
+    .floating-banana {
+      position: absolute;
+      font-size: 5.8rem;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.35;
+      user-select: none;
+      animation: floatBanana 6s ease-in-out infinite alternate;
+    }
+
+    .banana-1 { top: 10%; left: 8%; animation-delay: 0s; }
+    .banana-2 { top: 65%; left: 5%; animation-delay: 1.5s; }
+    .banana-3 { top: 15%; right: 8%; animation-delay: 3s; }
+    .banana-4 { top: 70%; right: 6%; animation-delay: 2s; }
+
+    @keyframes floatBanana {
+      0% { transform: translateY(0px) rotate(0deg) scale(1); }
+      50% { transform: translateY(-25px) rotate(15deg) scale(1.1); }
+      100% { transform: translateY(10px) rotate(-10deg) scale(0.95); }
+    }
+
+    /* =========================================================
+       ESTRUCTURA DE SECCIONES (FULL SCREEN SNAP)
+    ========================================================= */
+    section.hero-sec {
+      scroll-snap-align: start;
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      overflow: hidden;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px) scale(0.98);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    section.hero-sec.active .reveal {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* =========================================================
+       SECCIÓN 1: HERO
+    ========================================================= */
+    #sec-hero {
+      background: radial-gradient(circle at 50% 30%, #FFE566 0%, #FFC700 60%, #E6B000 100%);
+    }
+
+    .hero-content {
+      max-width: 1100px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 40px;
+      z-index: 5;
+    }
+
+    .badge-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--red-brand);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+      border: 2px solid white;
+    }
+
+    .main-title {
+      font-family: var(--font-heading);
+      font-size: clamp(3.2rem, 6.5vw, 5.8rem);
+      line-height: 0.95;
+      color: var(--red-brand);
+      text-shadow: 4px 5px 0px white, 8px 10px 0px rgba(59,31,11,0.15);
+      margin-bottom: 20px;
+    }
+
+    .main-title span {
+      display: block;
+      color: var(--blue-deep);
+      text-shadow: 4px 5px 0px white, 8px 10px 0px rgba(59,31,11,0.15);
+    }
+
+    .hero-desc {
+      font-size: clamp(1.15rem, 2vw, 1.4rem);
+      line-height: 1.5;
+      font-weight: 600;
+      color: var(--brown-dark);
+      max-width: 520px;
+      margin-bottom: 30px;
+    }
+
+    .img-wrapper-hero {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .img-wrapper-hero::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+      z-index: 1;
+      animation: pulseGlow 4s infinite alternate;
+    }
+
+    .img-hero {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.25));
+      transition: transform 0.4s ease;
+      animation: floatHero 5s ease-in-out infinite alternate;
+    }
+
+    .img-hero:hover {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    /* =========================================================
+       SECCIÓN 2: CUMPLEAÑERO
+    ========================================================= */
+    #sec-cumpleanero {
+      background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+      color: white;
+    }
+
+    .cumple-grid {
+      max-width: 1100px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 50px;
+      z-index: 5;
+    }
+
+    .img-balloons-container {
+      position: relative;
+      text-align: center;
+    }
+
+    .img-balloons {
+      width: 100%;
+      max-width: 420px;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,0.3));
+      animation: floatBalloons 4s ease-in-out infinite alternate;
+    }
+
+    .card-cumple {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 40px;
+      padding: clamp(35px, 5vw, 50px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .number-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px;
+      background: var(--yellow-main);
+      color: var(--brown-dark);
+      border-radius: 20px;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      transform: rotate(-3deg);
+      margin-bottom: 20px;
+      width: auto;
+      height: auto;
+    }
+
+    .cumple-title {
+      font-family: var(--font-heading);
+      font-size: clamp(3.2rem, 5vw, 3.4rem);
+      line-height: 1.15;
+      color: var(--yellow-main);
+      margin-bottom: 18px;
+      text-shadow: 10px 8px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .cumple-text {
+      font-size: 1.49rem;
+      line-height: 1.6;
+      color: #ffffff;
+      opacity: 0.95;
+      max-width: 480px;
+    }
+
+    /* =========================================================
+       SECCIÓN 3: DETALLES
+    ========================================================= */
+    #sec-detalles {
+      background: radial-gradient(circle at 70% 20%, #FFE566 0%, #2A9D8F 80%);
+      color: white;
+    }
+
+    .detalles-container {
+      max-width: 1150px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+      gap: 50px;
+      z-index: 5;
+    }
+
+    .img-globos-wrapper {
+      text-align: center;
+    }
+
+    .img-globo-aerostatico {
+      width: 100%;
+      max-width: 440px;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,0.25));
+      animation: floatAero 6s ease-in-out infinite alternate;
+    }
+
+    .grid-cards-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card-info-item {
+      background: white;
+      color: var(--brown-dark);
+      padding: 24px;
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      border: 3px solid #E8F5E9;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-info-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+    }
+
+    .info-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      background: var(--yellow-light);
+      padding: 10px;
+      border-radius: 18px;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--brown-dark);
+      line-height: 1.3;
+    }
+
+    /* =========================================================
+       SECCIÓN 4: CONFIRMACIÓN (CTA)
+    ========================================================= */
+    #sec-confirmar {
+      background: linear-gradient(180deg, #E63946 0%, #C1121F 100%);
+      color: white;
+      text-align: center;
+    }
+
+    .cta-box {
+      max-width: 750px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      padding: clamp(40px, 6vw, 70px);
+      border-radius: 48px;
+      box-shadow: 0 35px 70px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+
+    .cta-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      color: var(--yellow-main);
+      margin-bottom: 15px;
+      text-shadow: 3px 4px 0px rgba(0,0,0,0.3);
+    }
+
+    .cta-desc {
+      font-size: 1.3rem;
+      margin-bottom: 35px;
+      opacity: 0.95;
+      line-height: 1.5;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      padding: 22px 48px;
+      background: #25D366;
+      color: white;
+      font-size: 1.35rem;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 60px;
+      box-shadow: 0 15px 35px rgba(37,211,102,0.4), 0 6px 0 #1B9E4B;
+      transition: all 0.3s ease;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 20px 45px rgba(37,211,102,0.5), 0 8px 0 #1B9E4B;
+    }
+
+    /* Indicador de scroll */
+    .scroll-down-btn {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.8;
+    }
+
+    .mouse-icon {
+      width: 26px;
+      height: 42px;
+      border: 3px solid currentColor;
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .mouse-icon::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 8px;
+      background: currentColor;
+      border-radius: 2px;
+      animation: mouseScroll 1.8s infinite;
+    }
+
+    /* KEYFRAMES */
+    @keyframes floatHero {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-18px) rotate(2deg); }
+    }
+    @keyframes floatBalloons {
+      0% { transform: translateY(0px) rotate(-2deg); }
+      100% { transform: translateY(-22px) rotate(3deg); }
+    }
+    @keyframes floatAero {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-25px) scale(1.02); }
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.08); opacity: 1; }
+    }
+    @keyframes mouseScroll {
+      0% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, 14px); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      section.hero-sec { padding: 80px 20px 60px 20px; }
+      .hero-content, .cumple-grid, .detalles-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 30px;
+      }
+      .grid-cards-info { grid-template-columns: 1fr; }
+      .img-hero, .img-balloons, .img-globo-aerostatico { max-width: 280px; margin: 0 auto; }
+      .floating-banana { font-size: 2rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CONTENEDOR GLOBAL DE CONFETI -->
+  <div id="confetti-container"></div>
+
+  <!-- SECCIÓN 1: HERO (JORGE Y SOMBRERO AMARILLO) -->
+  <section class="hero-sec" id="sec-hero">
+    <!-- Bananas flotantes de fondo -->
+    <span class="floating-banana banana-1">🍌</span>
+    <span class="floating-banana banana-2">🍌</span>
+    <span class="floating-banana banana-3">🍌</span>
+    <span class="floating-banana banana-4">🍌</span>
+
+    <div class="hero-content reveal">
+      <div class="hero-text-side">
+        <div class="badge-capsule">🍌 ¡Gran Invitación Especial!</div>
+        <h1 class="main-title">¡Aventura <span>Curiosa!</span></h1>
+        <p class="hero-desc">
+          El Hombre del Sombrero Amarillo y Jorge el Curioso te invitan a una fiesta llena de sonrisas, sorpresas y mucha diversión.
+        </p>
+      </div>
+
+      <div class="img-wrapper-hero">
+        <img src="images/jorge_sombrero_amarillo.png" alt="Jorge y el Hombre del Sombrero Amarillo" class="img-hero">
+      </div>
+    </div>
+
+    <a href="#sec-cumpleanero" class="scroll-down-btn" style="color: var(--brown-dark);">
+      <div class="mouse-icon"></div>
+      <span>Desliza</span>
+    </a>
+  </section>
+
+  <!-- SECCIÓN 2: CUMPLEAÑERO (JORGE CON BOMBAS) -->
+  <section class="hero-sec" id="sec-cumpleanero">
+    <!-- Bananas flotantes de fondo -->
+    <span class="floating-banana banana-1">🍌</span>
+    <span class="floating-banana banana-2">🍌</span>
+    <span class="floating-banana banana-3">🍌</span>
+    <span class="floating-banana banana-4">🍌</span>
+
+    <div class="cumple-grid reveal">
+      <div class="img-balloons-container">
+        <img src="images/jorge_bombas.png" alt="Jorge con globos de colores" class="img-balloons">
+      </div>
+
+      <div class="card-cumple">
+        <div class="number-badge">2 Años de aventuras</div>
+        <h2 class="cumple-title">¡Liam Santiago Cumple Años!</h2>
+        <p class="cumple-text">
+          ¡Acompáñanos a celebrar este día tan especial! Habrá juegos salvajes, pastel delicioso y muchas bananas de colores.
+        </p>
+      </div>
+    </div>
+
+    <a href="#sec-detalles" class="scroll-down-btn">
+      <div class="mouse-icon"></div>
+      <span>Ver Detalles</span>
+    </a>
+  </section>
+
+  <!-- SECCIÓN 3: DETALLES (JORGE EN GLOBO AEROSTÁTICO) -->
+  <section class="hero-sec" id="sec-detalles">
+    <!-- Bananas flotantes de fondo -->
+    <span class="floating-banana banana-1">🍌</span>
+    <span class="floating-banana banana-2">🍌</span>
+    <span class="floating-banana banana-3">🍌</span>
+    <span class="floating-banana banana-4">🍌</span>
+
+    <div class="detalles-container reveal">
+      <div class="grid-cards-info">
+        <div class="card-info-item">
+          <div class="info-icon">📅</div>
+          <div class="info-label">Fecha</div>
+          <div class="info-value">Domingo, 20 de Septiembre</div>
+        </div>
+        <div class="card-info-item">
+          <div class="info-icon">⏰</div>
+          <div class="info-label">Hora</div>
+          <div class="info-value">4:00 PM</div>
+        </div>
+        <div class="card-info-item">
+          <div class="info-icon">🎈</div>
+          <div class="info-label">Lugar</div>
+          <div class="info-value">Las Farallones, Cali, Valle del Cauca</div>
+        </div>
+        <div class="card-info-item">
+          <div class="info-icon">🗺️</div>
+          <div class="info-label">Dirección</div>
+          <div class="info-value">Cra. 72 # 1C BIS-76</div>
+          <a href="https://maps.app.goo.gl/VbUhJz1BVBD9Kf6i7" target="_blank" style="color: var(--yellow-main);">Ver en Google Maps</a>
+        </div>
+      </div>
+
+      <div class="img-globos-wrapper">
+        <img src="images/Jorge_aventura.png" alt="Jorge en Globo Aerostático" class="img-globo-aerostatico">
+      </div>
+    </div>
+
+    <a href="#sec-confirmar" class="scroll-down-btn">
+      <div class="mouse-icon"></div>
+      <span>Confirmar</span>
+    </a>
+  </section>
+
+  <!-- SECCIÓN 4: CONFIRMACIÓN (CTA) -->
+  <section class="hero-sec" id="sec-confirmar">
+    <!-- Bananas flotantes de fondo -->
+    <span class="floating-banana banana-1">🍌</span>
+    <span class="floating-banana banana-2">🍌</span>
+    <span class="floating-banana banana-3">🍌</span>
+    <span class="floating-banana banana-4">🍌</span>
+
+    <div class="cta-box reveal">
+      <h2 class="cta-title">¿Nos Acompañas?</h2>
+      <p class="cta-desc">
+        Confirma tu asistencia lo antes posible para reservar tu lugar en esta aventura inolvidable.
+      </p>
+      <a href="https://wa.me/573225384669?text=¡Hola!%20Confirmo%20mi%20asistencia" target="_blank" class="btn-action">
+        <span>📲 Confirmar Asistencia por WhatsApp</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- SCRIPTS INTERACTIVOS -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Revelado suave de secciones al hacer scroll
+      const sections = document.querySelectorAll(".hero-sec");
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      }, { threshold: 0.3 });
+
+      sections.forEach(section => observer.observe(section));
+
+      // 2. Generador dinámico de confeti cayendo
+      const confettiContainer = document.getElementById("confetti-container");
+      const colors = ["#FFC700", "#E63946", "#00B4D8", "#2A9D8F", "#FFF4B8", "#FFFFFF"];
+
+      function createConfettiPiece() {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti-piece");
+        
+        // Propiedades aleatorias
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomLeft = Math.random() * 100;
+        const randomSize = Math.random() * 8 + 6;
+        const randomDuration = Math.random() * 3 + 4;
+
+        confetti.style.backgroundColor = randomColor;
+        confetti.style.left = `${randomLeft}vw`;
+        confetti.style.width = `${randomSize}px`;
+        confetti.style.height = `${randomSize * 1.5}px`;
+        confetti.style.animationDuration = `${randomDuration}s`;
+
+        confettiContainer.appendChild(confetti);
+
+        // Eliminar papelito después de caer para liberar memoria
+        setTimeout(() => {
+          confetti.remove();
+        }, randomDuration * 1000);
+      }
+
+      // Crear confeti de forma continua
+      setInterval(createConfettiPiece, 250);
+    });
+  </script>
+</body>
+</html>
